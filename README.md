@@ -1,3 +1,3 @@
 # ChessEngine
 
-A Swift chess engine.
+A simple chess engine. 
