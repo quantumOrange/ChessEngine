@@ -7,7 +7,7 @@
 //
 
 import Foundation
-func validate(chessboard:Chessboard, move:Move) -> ChessMove?
+public func validate(chessboard:Chessboard, move:Move) -> ChessMove?
 {
     guard let chessMove = ChessMove(from: move.from.int8Value, to: move.to.int8Value ,on:chessboard) else { return nil }
     return validate(chessboard: chessboard, move: chessMove)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-func apply(move:Move, to board:Chessboard) -> Chessboard? {
+public func apply(move:Move, to board:Chessboard) -> Chessboard? {
      guard let chessMove = validate(chessboard: board, move: move) else { return nil }
     return  apply(move:chessMove, to:board)
 }
