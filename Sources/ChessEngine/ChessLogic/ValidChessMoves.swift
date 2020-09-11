@@ -340,7 +340,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         if file > 0
                {
                    let takeLeft =  origin  -  9  //( -8 file, -1  rank  )
-                   if board[takeLeft]?.player  ==  .black
+                   if board[takeLeft]?.player  ==  .white
                    {
                        destinationSqs.append(takeLeft )
                    }
@@ -349,7 +349,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
        if file < 7
        {
            let takeRight =  origin  +  7 //( +8 file, -1  rank  )
-           if board[takeRight]?.player  ==  .black
+           if board[takeRight]?.player  ==  .white
            {
                destinationSqs.append(takeRight)
            }
