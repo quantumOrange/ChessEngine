@@ -1,3 +1,3 @@
 # ChessEngine
 
-A description of this package.
+A Swift chess engine.
