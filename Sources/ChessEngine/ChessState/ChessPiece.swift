@@ -80,6 +80,10 @@ extension ChessPiece:CustomStringConvertible {
     public var description:String {
         return "\(player) \(kind)"
     }
+    public var identifyingName:String {
+        let idString = ChessboardSquare(rawValue: Int8(id)) ?? String(id)
+        "\(player) \(kind) \(idString)"
+    }
 }
 
 extension ChessPiece {

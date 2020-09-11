@@ -102,7 +102,22 @@ class ChessboardSquareTests: XCTestCase {
     }
     
     func testEdges() throws {
+       // let i:Int8 = 23
+       // i.chessboardSquare
         
+        for i in 0..<64 {
+let sq = ChessboardSquare(rawValue: Int8(i))!
+print(sq)
+            /*
+            let j = Int8(i)
+            let sq = j.chessboardSquare
+            let rank = sq.rank
+            let file = sq.file
+            
+            print("case \(file)\(rank) == \")
+ */
+        }
+        //let msq = ChessboardSquare(
         
         let emptyboardStr =      """
 

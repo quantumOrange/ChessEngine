@@ -62,33 +62,99 @@ extension Int8 {
 }
 
 
+public enum ChessboardSquare:Int8,Equatable,Hashable,Codable {
+    case a1
+    case a2
+    case a3
+    case a4
+    case a5
+    case a6
+    case a7
+    case a8
+    case b1
+    case b2
+    case b3
+    case b4
+    case b5
+    case b6
+    case b7
+    case b8
+    case c1
+    case c2
+    case c3
+    case c4
+    case c5
+    case c6
+    case c7
+    case c8
+    case d1
+    case d2
+    case d3
+    case d4
+    case d5
+    case d6
+    case d7
+    case d8
+    case e1
+    case e2
+    case e3
+    case e4
+    case e5
+    case e6
+    case e7
+    case e8
+    case f1
+    case f2
+    case f3
+    case f4
+    case f5
+    case f6
+    case f7
+    case f8
+    case g1
+    case g2
+    case g3
+    case g4
+    case g5
+    case g6
+    case g7
+    case g8
+    case h1
+    case h2
+    case h3
+    case h4
+    case h5
+    case h6
+    case h7
+    case h8
+}
 
-
-public struct ChessboardSquare:Equatable,Hashable,Codable {
-    public let rank:ChessRank
-    public let file:ChessFile
+extension ChessboardSquare {
+    public init(rank:ChessRank, file: ChessFile)
+    {
+        let raw = Int8(file.rawValue*8 + rank.rawValue)
+        self = ChessboardSquare(rawValue: raw)! // cannot fail because rank and file raw values are in 0..<8, so raw is in 0..<64
+    }
     
-    public init(rank:ChessRank, file: ChessFile){
-        self.rank = rank
-        self.file = file
+    public var rank:ChessRank {
+        ChessRank(rawValue:self.rawValue.rank)! // cannot fail because the rank raw vaule is in 0..<8
     }
-}
-
-extension ChessboardSquare {
-    var int8Value:Int8 {
-        Int8(self.file.rawValue*8 + self.rank.rawValue)
+    
+    public var file:ChessFile {
+         ChessFile(rawValue:self.rawValue.file)! // cannot fail because the file raw vaule is in 0..<8
     }
-}
 
-extension ChessboardSquare {
-    // ChessboardSquare(rank: newRank, file: newFile)
-    init?(code:String){
-        //let invalidRawValue = -1
+    public init?(code:String)
+    {
         guard   let rank = ChessRank(code:String(code.suffix(1))),
-                let file = ChessFile(code:String(code.prefix(1)))     else { return nil }
+                       let file = ChessFile(code:String(code.prefix(1)))     else { return nil }
         
-        self.rank = rank
-        self.file = file
+        self = ChessboardSquare(rank: rank, file: file)
+    }
+    
+    // TODO: remove this
+    var int8Value:Int8 {
+        rawValue
     }
 }
 
