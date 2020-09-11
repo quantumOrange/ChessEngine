@@ -61,7 +61,6 @@ extension Int8 {
     }
 }
 
-
 public enum ChessboardSquare:Int8,Equatable,Hashable,Codable {
     case a1
     case a2
