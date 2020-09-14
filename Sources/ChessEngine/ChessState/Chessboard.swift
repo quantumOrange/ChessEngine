@@ -49,7 +49,7 @@ public struct Chessboard:Codable {
     
     private var storage:[ChessPiece?]
     
-    var takenPieces:[ChessPiece] = []
+    public internal(set)  var takenPieces:[ChessPiece] = []
     
     var castelState:CastelState = CastelState()
    // var whiteCastelState:CastelState = CastelState()
@@ -143,12 +143,7 @@ extension Chessboard {
     
     public static func start() ->  Chessboard {
         var board = Chessboard()
-        /*
-        func id(rank:ChessRank,file:ChessFile) -> Int {
-            //file.rawValue*8 + rank.rawValue
-            
-        }
-       */
+       
         ChessFile.allCases.forEach{ file in
             board[file , ._2] = ChessPiece(player: .white, kind: .pawn, id:ChessboardSquare(rank: ._2, file: file).id)
             board[file , ._7] = ChessPiece(player: .black, kind: .pawn, id:ChessboardSquare(rank: ._7, file: file).id)

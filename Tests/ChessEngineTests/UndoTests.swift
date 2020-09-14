@@ -46,7 +46,7 @@ class UndoTests: XCTestCase {
         
         for move in moves {
             board = apply(move: move, to: board)!
-             XCTAssert(board.whosTurnIsItAnyway ==  (board.moves.count.isMultiple(of: 2) ? .white : .black))
+            XCTAssert(board.whosTurnIsItAnyway ==  (board.moves.count.isMultiple(of: 2) ? .white : .black))
         }
         
         XCTAssertFalse(board.same( as: Chessboard.start() ))
@@ -60,7 +60,15 @@ class UndoTests: XCTestCase {
         //black still has the right to caste queenside
         XCTAssert(board.castelState.blackCanCastleQueenside)
         
-       
+        XCTAssert(board.takenPieces.count == 3)
+        if let piece = board.takenPieces.last {
+            XCTAssert(piece.kind == .bishop)
+            XCTAssert(piece.player == .black)
+        }
+        else
+        {
+            XCTAssert(false, "No piece taken. The last piece taken should have been a black bishop.")
+        }
         
         //Undo all the moves
         for _ in 0...moves.count {
@@ -74,6 +82,7 @@ class UndoTests: XCTestCase {
         XCTAssertFalse(board.undo())
         // So the pieces should be in there start poitions
         XCTAssert(board.same( as: Chessboard.start() ))
+        XCTAssert(board.takenPieces.isEmpty)
         
         //Castle state restored to initial state - both players can castle on both sides
         XCTAssert(board.castelState.whiteCanCastleKingside)

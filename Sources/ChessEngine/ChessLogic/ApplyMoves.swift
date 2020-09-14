@@ -27,8 +27,13 @@ extension Chessboard {
        // self.quickValue -=  move.removeFirst.piece.value
         self[move.removeFirst.square]  = nil
         
+        
         if let removeSecond = move.removeSecond {
-          //  self.quickValue -=  removeSecond.piece.value
+            if move.addSecond == nil {
+                // we are removing a piec but not putting it back => taking a peice
+                takenPieces.append(removeSecond.piece)
+            }
+          
             self[removeSecond.square] = nil
         }
         
@@ -67,11 +72,15 @@ extension Chessboard {
         }
 
         // replace the pieces that were removed
-      //  self.quickValue += move.removeFirst.piece.value
+      
         self[move.removeFirst.square]  = move.removeFirst.piece
 
         if let removesecond = move.removeSecond {
-           // self.quickValue += removesecond.piece.value
+            if move.addSecond == nil {
+                // a piece was taken
+                _ = takenPieces.removeLast()
+            }
+           
             self[removesecond.square] = removesecond.piece
         }
 
