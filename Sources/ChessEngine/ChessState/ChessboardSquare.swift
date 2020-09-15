@@ -61,7 +61,7 @@ extension Int8 {
     }
 }
 
-public enum ChessboardSquare:Int8,Equatable,Hashable,Codable {
+public enum ChessboardSquare:Int8,Equatable,Hashable,Codable,CaseIterable {
     case a1
     case a2
     case a3
@@ -208,17 +208,22 @@ extension ChessboardSquare {
 extension Chessboard {
    
     func squares(with piece:ChessPiece) -> [ChessboardSquare] {
-        squares.filter{
-            guard let otherPiece = self[$0]  else { return false }
-            return ( otherPiece.kind == piece.kind && otherPiece.player == piece.player )
-        }
+       // ChessboardSquare.a
+        ChessboardSquare
+            .allCases
+           .filter{
+                guard let otherPiece = self[$0]  else { return false }
+                return ( otherPiece.kind == piece.kind && otherPiece.player == piece.player )
+            }
     }
     
     public var positionPieces: [(ChessboardSquare,ChessPiece)] {
-        return squares.compactMap {
-            guard let piece = self[$0] else { return nil }
-            return ($0,piece)
-        }
+        return ChessboardSquare
+                        .allCases
+                        .compactMap {
+                            guard let piece = self[$0] else { return nil }
+                            return ($0,piece)
+                        }
     }
     
     

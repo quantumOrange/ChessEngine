@@ -231,14 +231,14 @@ class ValidMoves: XCTestCase {
               
                 let board = Chessboard(string: emptyboardStr)!
                
-          let valid1 = ChessMove(from: square, to: ChessboardSquare(code: "f4")!.int8Value, on: board)!
-          let valid2 = ChessMove(from: square, to: ChessboardSquare(code: "d7")!.int8Value, on: board)!
-          let valid3 = ChessMove(from: square, to: ChessboardSquare(code: "c4")!.int8Value, on: board)!
-          let valid4 = ChessMove(from: square, to: ChessboardSquare(code: "d1")!.int8Value, on: board)!
+          let valid1 = ChessMove(from: square, to: ChessboardSquare(code: "f4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid2 = ChessMove(from: square, to: ChessboardSquare(code: "d7")!.int8Value, on: board,updateCasteleState: true)!
+          let valid3 = ChessMove(from: square, to: ChessboardSquare(code: "c4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid4 = ChessMove(from: square, to: ChessboardSquare(code: "d1")!.int8Value, on: board,updateCasteleState: true)!
 
-          let valid5 = ChessMove(from: square, to: ChessboardSquare(code: "a4")!.int8Value, on: board)!
-          let valid6 = ChessMove(from: square, to: ChessboardSquare(code: "d8")!.int8Value, on: board)!
-          let invalid = ChessMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value,on: board)!
+          let valid5 = ChessMove(from: square, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid6 = ChessMove(from: square, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
+          let invalid = ChessMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value,on: board,updateCasteleState: true)!
                
                assert(board[square]!.kind == .rook)
          print("------hello-----")
@@ -290,14 +290,14 @@ class ValidMoves: XCTestCase {
         
         let moves =  validRookMoves(board:board, square: whiteRookSquare)
         
-        let valid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "f4")!.int8Value, on: board)!
-        let valid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d7")!.int8Value, on: board)!
-        let valid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "c4")!.int8Value, on: board)!
-        let valid4 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d1")!.int8Value, on: board)!
+        let valid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "f4")!.int8Value, on: board, updateCasteleState: true )!
+        let valid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d7")!.int8Value, on: board ,updateCasteleState: true)!
+        let valid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "c4")!.int8Value, on: board ,updateCasteleState: true)!
+        let valid4 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d1")!.int8Value, on: board, updateCasteleState: true)!
 
-        let invalid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "a4")!.int8Value, on: board)!
-        let invalid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d8")!.int8Value, on: board)!
-        let invalid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "b2")!.int8Value, on: board)!
+        let invalid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
+        let invalid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
+        let invalid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "b2")!.int8Value, on: board,updateCasteleState: true)!
         
         XCTAssert(moves.contains(valid1))
         XCTAssert(moves.contains(valid2))
@@ -310,8 +310,8 @@ class ValidMoves: XCTestCase {
         
         let blackMoves =  validRookMoves(board:board, square: blackRookSquare)
         
-        let valid5 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "e1")!.int8Value, on: board)!
-        let invalid4 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "g3")!.int8Value, on: board)!
+        let valid5 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "e1")!.int8Value, on: board, updateCasteleState: true)!
+        let invalid4 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "g3")!.int8Value, on: board, updateCasteleState: true)!
         XCTAssert(blackMoves.count == 14, "expected 14 moves, found \(moves.count)")
         XCTAssert(blackMoves.contains(valid5))
         XCTAssertFalse(blackMoves.contains(invalid4))
@@ -420,9 +420,9 @@ class ValidMoves: XCTestCase {
         
         let whiteresults = validKingMoves(board: board, square: whiteKingSq)
         
-        
+        //whiteresults.contains(
         for move in validWhiteKingMoves {
-            XCTAssert(whiteresults.contains(move) , "\(move) should be valid")
+            XCTAssert(whiteresults.contains(where:{ $0.from == move.from && $0.to == move.to } ), "\(move) should be valid")
         }
         XCTAssert(whiteresults.count == 8)
         
@@ -431,7 +431,7 @@ class ValidMoves: XCTestCase {
         let blackresults = validKingMoves(board: board, square: blackKingSq)
            
            for move in validBlackKingMoves {
-               XCTAssert(blackresults.contains(move) , "\(move) should be valid")
+               XCTAssert(blackresults.contains(where:{ $0.from == move.from && $0.to == move.to }) , "\(move) should be valid")
            }
         
         let invalid = ChessMove(from: blackKingSq, to: ChessboardSquare(code: "f2")!.int8Value, on: board)!

@@ -585,30 +585,7 @@ class MinMaxChessEnginteTests: XCTestCase {
     }
 
     func testPerformanceExample() {
-        // This is an example of a performance test case.
-        /*
-        let moves:[Move] = [
-                                    Move(code:"e2->e4")!,
-                                    Move(code:"e7->e6")!,
-                                    
-                                    Move(code:"f1->c4")!,
-                                    Move(code:"h7->h6")!,
-                                    
-                                    Move(code:"d1->f3")!,
-                                    Move(code:"f8->a3")!,
-                                    
-                                    Move(code:"b2->b3")!,
-                                    Move(code:"a3->c1")!,
-                                    
-                                    Move(code:"b1->c3")!
-                                ]
         
-        var  board = Chessboard.start()
-        
-        for move in moves {
-            board = apply(move: move, to: board)!
-        }
-        */
         let boardStr =      """
 
                                 8   .  .  .  ♜  .  .  .  ♚

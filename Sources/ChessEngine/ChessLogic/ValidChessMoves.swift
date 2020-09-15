@@ -43,13 +43,12 @@ func validate(chessboard:Chessboard, move:ChessMove) -> ChessMove? {
 
 
 func isValid(move:Move, on board:Chessboard) -> Bool {
-    guard let chessMove = ChessMove(from: move.from.int8Value, to: move.to.int8Value, on: board) else { return false }
+    guard let chessMove = ChessMove(from: move.from.int8Value, to: move.to.int8Value, on: board,updateCasteleState: true) else { return false }
     return isValid(move: chessMove, on: board)
 }
 
 func isValid(move:ChessMove, on board:Chessboard) -> Bool {
-  
-    validMoves(chessboard:board).contains(move)
+    validMoves(chessboard:board).contains( where:{$0.from == move.from && $0.to == move.to})
 }
 
 
@@ -291,16 +290,16 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     
     // rank + 1 -> +1
     // file + 1 -> +8
-  // sq = 8 * file + rank
+    // sq = 8 * file + rank
     
     switch  board.whosTurnIsItAnyway {
     
     case .white:
-        let moveForwardOne = origin + 1
+        let moveForwardOne = origin &+ 1
         if board[moveForwardOne] == nil {
             destinationSqs.append(moveForwardOne)
             if rank == 1 {
-                let moveForwardTwo = moveForwardOne + 1
+                let moveForwardTwo = moveForwardOne &+ 1
                 if board[moveForwardTwo] == nil {
                     destinationSqs.append(moveForwardTwo )
                 }
@@ -309,7 +308,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         
         if file > 0
         {
-            let takeLeft =  origin  -  7  //( -8 file, +1  rank  )
+            let takeLeft =  origin  &-  7  //( -8 file, +1  rank  )
             if board[takeLeft]?.player  ==  .black
             {
                 destinationSqs.append(takeLeft )
@@ -318,7 +317,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         
         if file < 7
         {
-            let takeRight =  origin  +  9 //( +8 file, +1  rank  )
+            let takeRight =  origin  &+  9 //( +8 file, +1  rank  )
             if board[takeRight]?.player  ==  .black
             {
                 destinationSqs.append(takeRight)
@@ -326,11 +325,11 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         }
         
     case .black:
-        let moveForwardOne = origin - 1
+        let moveForwardOne = origin &- 1
         if board[moveForwardOne] == nil {
             destinationSqs.append(moveForwardOne)
             if rank == 6 {
-                let moveForwardTwo = moveForwardOne - 1
+                let moveForwardTwo = moveForwardOne &- 1
                 if board[moveForwardTwo] == nil {
                     destinationSqs.append(moveForwardTwo )
                 }
@@ -339,7 +338,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         
         if file > 0
                {
-                   let takeLeft =  origin  -  9  //( -8 file, -1  rank  )
+                   let takeLeft =  origin  &-  9  //( -8 file, -1  rank  )
                    if board[takeLeft]?.player  ==  .white
                    {
                        destinationSqs.append(takeLeft )
@@ -348,7 +347,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
                
        if file < 7
        {
-           let takeRight =  origin  +  7 //( +8 file, -1  rank  )
+           let takeRight =  origin  &+  7 //( +8 file, -1  rank  )
            if board[takeRight]?.player  ==  .white
            {
                destinationSqs.append(takeRight)
@@ -362,61 +361,9 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     if let  enPassant = enPassant(board: board, square: origin){
          moves.append( enPassant)
     }
-               
+    // TODO: pawn promotion
     return moves
    
-  //  return []
-    
-    /*
-    var moves:[ChessMove?] = []
-    switch board.whosTurnIsItAnyway {
-    
-    case .white:
-        if let sq1 = square.getNeighbour(.top) {
-            let mv1 = makePawnForwardMove(board: board, from: square, to: sq1)
-            moves.append(mv1)
-            
-            if let mv1 = mv1, square.rank == ._2 {
-                if let sq2 = mv1.to.getNeighbour(.top) {
-                    let mv2 = makePawnForwardMove(board: board, from: square, to: sq2)
-                    moves.append(mv2)
-                }
-            }
-        }
-        
-        //pawns take diagonally
-        moves.append(makePawnTakingdMove(board: board, from: square, to:square.getNeighbour(.topRight)))
-        moves.append(makePawnTakingdMove(board: board, from: square, to:square.getNeighbour(.topLeft)))
-        
-        
-        
-        
-    case .black:
-        
-        if let sq1 = square.getNeighbour(.bottom) {
-            let mv1 = makePawnForwardMove(board: board, from: square, to: sq1)
-            moves.append(mv1)
-            
-            if let mv1 = mv1, square.rank == ._7 {
-                if let sq2 = mv1.to.getNeighbour(.bottom) {
-                    let mv2 = makePawnForwardMove(board: board, from: square, to: sq2)
-                    moves.append(mv2)
-                }
-            }
-        }
-        
-        
-        
-        //pawns take diagonally
-        moves.append(makePawnTakingdMove(board: board, from: square, to:square.getNeighbour(.bottomRight)))
-        moves.append(makePawnTakingdMove(board: board, from: square, to:square.getNeighbour(.bottomLeft)))
-        
-    }
-    
-    moves.append(enPassant(board: board, square: square))
-    
-    return moves.compactMap{$0}
-    */
 }
 
 func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
@@ -448,12 +395,12 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         if file < 6
         {
             // file + 2 -> +16
-            destinationSqs.append( origin + 17 )
+            destinationSqs.append( origin &+ 17 )
         }
         if file > 1
         {
             // file -2  -> -16
-            destinationSqs.append( origin - 15 )
+            destinationSqs.append( origin &- 15 )
         }
         
         if  rank < 6
@@ -462,12 +409,12 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
             if file < 7
             {
                 // file + 1 -> +8
-                destinationSqs.append( origin + 10 )
+                destinationSqs.append( origin &+ 10 )
             }
             if file > 0
             {
                 // file - 1 -> -8
-                destinationSqs.append( origin - 6 )
+                destinationSqs.append( origin &- 6 )
             }
         }
     }
@@ -478,12 +425,12 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
         if file < 6
         {
             // file + 2 -> +16
-            destinationSqs.append( origin + 15 )
+            destinationSqs.append( origin &+ 15 )
         }
         if file > 1
         {
             // file -2  -> -16
-            destinationSqs.append( origin - 17 )
+            destinationSqs.append( origin &- 17 )
         }
         
         if  rank > 1
@@ -492,12 +439,12 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
             if file < 7
             {
                 // file + 1 -> +8
-                 destinationSqs.append( origin  +  6 )
+                 destinationSqs.append( origin  &+  6 )
             }
             if file > 0
             {
                 // file - 1 -> -8
-                destinationSqs.append( origin  - 10 )
+                destinationSqs.append( origin  &- 10 )
             }
         }
     }
@@ -507,36 +454,8 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
                 .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
     
     
-    
-    /*
-    var destionationSquares:[ChessboardSquare?] = []
-    
-    destionationSquares.append(square.getNeighbour(.top)?.getNeighbour(.top)?.getNeighbour(.left))
-    destionationSquares.append(square.getNeighbour(.top)?.getNeighbour(.top)?.getNeighbour(.right))
-    destionationSquares.append(square.getNeighbour(.bottom)?.getNeighbour(.bottom)?.getNeighbour(.left))
-    destionationSquares.append(square.getNeighbour(.bottom)?.getNeighbour(.bottom)?.getNeighbour(.right))
-    destionationSquares.append(square.getNeighbour(.left)?.getNeighbour(.left)?.getNeighbour(.top))
-    destionationSquares.append(square.getNeighbour(.left)?.getNeighbour(.left)?.getNeighbour(.bottom))
-    destionationSquares.append(square.getNeighbour(.right)?.getNeighbour(.right)?.getNeighbour(.top))
-    destionationSquares.append(square.getNeighbour(.right)?.getNeighbour(.right)?.getNeighbour(.bottom))
-    
-    return destionationSquares
-                .compactMap{$0}
-                .compactMap{ makeMove(board: board, from: square, to: $0) }
-   */
 }
-/*
-extension Chessboard {
-    var currentPlayersCastelState:CastelState {
-        switch self.whosTurnIsItAnyway {
-        case .white:
-            return self.whiteCastelState
-        case .black:
-            return self.blackCastelState
-        }
-    }
-}
-*/
+
 func validKingMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     var destinationSqs:[Int8] = []
    // let origin = square.int8Value
@@ -569,48 +488,40 @@ func validKingMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     
     //above
     if rank < 7 {
-        destinationSqs.append( origin + 1 )  // top +1
+        destinationSqs.append( origin &+ 1 )  // top +1
         if file > 0 {
             //let sq =  origin - 7
-            destinationSqs.append( origin - 7 )  // top left
+            destinationSqs.append( origin &- 7 )  // top left
         }
         if file <  7 {
            // let sq =
-            destinationSqs.append( origin + 9 )  // top right
+            destinationSqs.append( origin &+ 9 )  // top right
         }
     }
     
     //below
     if rank > 0 {
-        destinationSqs.append( origin - 1 )  // bottom -1
+        destinationSqs.append( origin &- 1 )  // bottom -1
         if file > 0 {
-            destinationSqs.append( origin - 9 )  // bottom left
+            destinationSqs.append( origin &- 9 )  // bottom left
         }
          if file <  7 {
-            destinationSqs.append( origin + 7 )  // bottom right
+            destinationSqs.append( origin &+ 7 )  // bottom right
         }
     }
     
     //middle
     if file > 0 {
-        destinationSqs.append( origin - 8 )  // bottom left
+        destinationSqs.append( origin &- 8 )  // bottom left
     }
     if file < 7 {
-        destinationSqs.append( origin + 8 )  // bottom right
+        destinationSqs.append( origin &+ 8 )  // bottom right
     }
     
     return destinationSqs
                 .filter  {  board[$0]?.player != board.whosTurnIsItAnyway }
-                .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
+                .compactMap{ ChessMove(from: origin, to: $0, on: board , updateCasteleState: true) }
     
-    /*
-        let directions = ChessboardSquare.Direction.allCases
-    
-        return directions
-                    .compactMap{square.getNeighbour($0)}
-                    .compactMap{ makeMove(board: board, from: square, to: $0) }
-    
-    */
 }
 
 
@@ -622,25 +533,19 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     //bottomLeft      // - 9     // decrease rank and file                      //  n =  min ( rank , file )
     //bottomRight     // + 7     // decrease rank (-1) , increase file (+8)     //  n =  min (  rank , 1 - file )
     
-    
-  //  let origin   = square.int8Value
-    //topLeft        // - 7
-    //topRight      // + 9 //  //
-                 //bottomLeft   // -9  //
-                 //bottomRight    // 7
        
        var i = origin
     let rank:Int8 = origin.rank
     let file:Int8 = origin.file
-    let inv_rank = 7 - rank
-    let inv_file = 7 - file
+    let inv_rank = 7 &- rank
+    let inv_file = 7 &- file
     
     var n_moves = min(rank, inv_file)
     var n = 0
     
        while n < n_moves {
-           i += 7
-           n += 1
+           i &+= 7
+           n &+= 1
       //  rank = i.rank
      //   file = i.file
           // print(i)
@@ -663,8 +568,8 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     n = 0
     
         while n < n_moves {
-            i -= 7
-             n += 1
+            i &-= 7
+             n &+= 1
        //  rank = i.rank
        //  file = i.file
            // print(i)
@@ -688,8 +593,8 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     n = 0
     
          while n < n_moves {
-             i += 9
-               n += 1
+             i &+= 9
+               n &+= 1
          // rank = i.rank
          // file = i.file
             // print(i)
@@ -711,8 +616,8 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     n_moves = min(rank, file)
     n = 0
          while n < n_moves {
-            i -= 9
-              n += 1
+            i &-= 9
+              n &+= 1
          //rank = i.rank
         // file = i.file
            // print(i)
@@ -741,95 +646,70 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
 
 
 func validRookMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
-    // i = file*8 + rank
-  
     var destinationSqs:[Int8] = []
     
-  //  let origin   = square.int8Value
-    
-    
-   // let topEdge =   origin.file * 8  + 7  // rank = 7, file
-  //  let bottomEdge =   origin.file * 8   // rank = 0,  file
-  //  let leftEdge =   origin.rank  //rank ,  file = 0
-  //  let rightEdge =   56  + origin.rank // rank ,  file = 7
-    //origin.chessboardSquare
-    
-    //right  + 8
-  //  print("Sqaure ??  \(origin)")
-  //  print("--------- go right  +8 ----------------")
-    let rightEdge =  56  + origin.rank
+
+    let rightEdge =  56  &+ origin.rank
     var i = origin
     while i != rightEdge {
-        i += 8
-       // print(i)
+        i &+= 8
+       
         if let piece  = board[i] {
             if piece.player != board.whosTurnIsItAnyway {
-               // print(i)
+               
                 destinationSqs.append(i)
             }
             break
         }
-      //  print(i)
+      
         destinationSqs.append(i)
         assert( i >= 0  && i < 64  )
     }
-    //
-    
-    
-   // print("--------- go left -8 ----------------")
-    
-    //-------------------------------
+
     //left - 8
     let leftEdge =  origin.rank
     
     i = origin
      while i != leftEdge {
-        i -= 8
+        i &-= 8
         
         if let piece  = board[i] {
             if piece.player != board.whosTurnIsItAnyway {
-         //       print(i)
+         
                 destinationSqs.append(i)
             }
             break
         }
-      //  print(i)
+      
         destinationSqs.append(i)
         assert( i >= 0  && i < 64  )
     }
-   
-    
-   //  print("--------- go up  +1 ----------------")
-    //-------------------------------
-    //top  + 1
     
     let topEdge = origin.file * 8 + 7
     
     i = origin
       while i != topEdge {
-           i += 1
+           i &+= 1
             
            if let piece  = board[i] {
                if piece.player != board.whosTurnIsItAnyway {
-                //   print(i)
+                
                    destinationSqs.append(i)
                }
                break
            }
-         //  print(i)
+         
            destinationSqs.append(i)
            assert( i >= 0  && i < 64  )
        }
       
-    
-  //  print("--------- go down  -1 ----------------")
-    //-------------------------------
+
     //bottom  -1
-    let bottomEdge = origin.file * 8
+    let bottomEdge = origin.file &* 8
     
     i = origin
      while i != bottomEdge {
-        i -= 1
+        i &-= 1
         
         if let piece  = board[i] {
             if piece.player != board.whosTurnIsItAnyway {
@@ -845,23 +725,12 @@ func validRookMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
    
     
   return destinationSqs
-        .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
-  //  return []
-    
-  // let directions:[ChessboardSquare.Direction] = [.bottom,.top,.left,.right]
-    
-    
-   
-   // return directions.flatMap{ getAllMoves(on: board, from: square, in: $0)}
+        .compactMap{ ChessMove(from: origin, to: $0, on: board, updateCasteleState: true ) }
 }
 
 
 func validQueenMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
-    
     validRookMoves(board: board, square: origin) + validBishopMoves(board: board, square: origin)
-   // let directions = ChessboardSquare.Direction.allCases
-    
-   // return directions.flatMap{ getAllMoves(on: board, from: square, in: $0)}
 }
 
 

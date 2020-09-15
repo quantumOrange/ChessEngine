@@ -107,7 +107,6 @@ func miniMax(for board:inout Chessboard, alpha:Float, beta:Float, depth:Int,  pl
 
     let hasKing = board.squares(with: ChessPiece(player: board.whosTurnIsItAnyway, kind: .king, id:0)).count == 1;
     if !hasKing {
-        // return board.quickValue
        return board.evaluate()
     }
     

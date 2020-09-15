@@ -10,7 +10,7 @@ import Foundation
 extension ChessMove {
     init?(enPassant origin:Int8, on board:Chessboard){
         let fromSquare = origin
-       /*
+        /*
 
             8   ♜  ♞  ♝  ♛  ♚  ♝  ♞  ♜
             7   ♟  .  ♟  ♟  ♟  ♟  .  ♟

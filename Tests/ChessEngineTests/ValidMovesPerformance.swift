@@ -45,7 +45,9 @@ var developedBoard:Chessboard!
 
     func testPerformanceUncheckedValidMoves() {
             self.measure {
+                for _ in 1...1000 {
                 let _ = uncheckedValidMoves(chessboard:developedBoard)
+                }
             }
         }
 
@@ -68,13 +70,26 @@ var developedBoard:Chessboard!
             
             let board = Chessboard(string: boardStr)!
             
+            
             let square = ChessboardSquare(code: "d4")!
             
             assert(board[square]!.kind == .pawn)
             
+            
+            let board2 = Chessboard.start()
+            let squares:[ChessboardSquare] = [ .a2, .b2,.c2, .d2,.e2,.f2,.g2,.h2]
+            
+            
             self.measure
             {
-                let _ = validPawnMoves(board:board, square: square.int8Value)
+                
+                for _ in 1...10000 {
+                    for sq in squares {
+                        let _ = validPawnMoves(board:board, square: square.int8Value)
+                        let _ = validPawnMoves(board:board2, square: sq.int8Value)
+                        
+                    }
+                }
             }
         }
         

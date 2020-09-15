@@ -15,17 +15,13 @@ public struct Chessboard:Codable {
     public enum GamePlayState:Equatable ,Codable {
         case won(PlayerColor)
         case draw
-        // case noStarted
-        // case abandoned
         case inPlay
     }
     
     struct CastelState:Codable,Equatable {
-        //var canCastleQueenside:Bool = true;
-       // var canCastleKingside:Bool = true;
+       
         
-        
-        var whiteCanCastleQueenside:Bool = true;
+           var whiteCanCastleQueenside:Bool = true;
            var whiteCanCastleKingside:Bool = true;
            var blackCanCastleQueenside:Bool = true;
            var blackCanCastleKingside:Bool = true;
@@ -37,38 +33,30 @@ public struct Chessboard:Codable {
         self.quickValue = 0
     }
     
-    public var whosTurnIsItAnyway:PlayerColor  = .white  /*{
-        return moves.count.isMultiple(of: 2) ? .white : .black
-    } */
-    
-    mutating func toggleTurn() {
-        whosTurnIsItAnyway = !whosTurnIsItAnyway
-    }
+    public var whosTurnIsItAnyway:PlayerColor  = .white
     
     public var gamePlayState = GamePlayState.inPlay
     
     private var storage:[ChessPiece?]
     
-    public internal(set)  var takenPieces:[ChessPiece] = []
+    public internal(set) var takenPieces:[ChessPiece] = []
     
     var castelState:CastelState = CastelState()
-   // var whiteCastelState:CastelState = CastelState()
     
     var moves:[ChessMove] = []
     
     var redoableMoves:[ChessMove] = []
-  //  var undoStates:[[ChessboardSquare:ChessPiece?]] = []
-    
-    
-    
-   public var squares:[ChessboardSquare] = {
-       return (0...7).flatMap{ i in
-              (0...7).map { j in
-               ChessboardSquare(rank: ChessRank(rawValue: i)!, file: ChessFile(rawValue: j)!)
-           }
-       }
-   }()
 }
+
+extension Chessboard {
+    mutating func toggleTurn() {
+        whosTurnIsItAnyway = !whosTurnIsItAnyway
+    }
+    
+    var squares:[ChessboardSquare] { ChessboardSquare.allCases }
+}
+
+
 
 extension Chessboard {
     mutating func randomise() {
