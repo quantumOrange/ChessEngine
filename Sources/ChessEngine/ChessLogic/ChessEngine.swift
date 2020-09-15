@@ -15,9 +15,9 @@ func evaluateMove(_ board:Chessboard, noise:Float) -> (ChessMove) -> Float {
     }
 }
 
-public func pickMove(for board:Chessboard) -> ChessMove? {
+public func pickMove(for board:Chessboard , depth:Int = 3) -> ChessMove? {
     let start = DispatchTime.now() // <<<<<<<<<< Start time
-    let depth = 3
+   
     let move = pickMoveMiniMax(for: board, depth:depth)
     let end = DispatchTime.now()
     let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // nano seconds (UInt64)
