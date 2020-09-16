@@ -9,7 +9,7 @@
 import Foundation
 public func validate(chessboard:Chessboard, move:Move) -> ChessMove?
 {
-    guard let chessMove = ChessMove(from: move.from.int8Value, to: move.to.int8Value ,on:chessboard) else { return nil }
+    guard let chessMove = ChessMove.createMove(from: move.from.int8Value, to: move.to.int8Value ,on:chessboard) else { return nil }
     return validate(chessboard: chessboard, move: chessMove)
 }
 
@@ -43,7 +43,7 @@ func validate(chessboard:Chessboard, move:ChessMove) -> ChessMove? {
 
 
 func isValid(move:Move, on board:Chessboard) -> Bool {
-    guard let chessMove = ChessMove(from: move.from.int8Value, to: move.to.int8Value, on: board,updateCasteleState: true) else { return false }
+    guard let chessMove = ChessMove.createMove(from: move.from.int8Value, to: move.to.int8Value, on: board,updateCasteleState: true) else { return false }
     return isValid(move: chessMove, on: board)
 }
 
@@ -189,14 +189,14 @@ func makeMove(board:Chessboard, from:ChessboardSquare, to:ChessboardSquare) -> C
     
     guard  board.whosTurnIsItAnyway != board[to]?.player else  { return nil }
     
-    return ChessMove(from: from.int8Value, to: to.int8Value, on:board)
+    return ChessMove.createMove(from: from.int8Value, to: to.int8Value, on:board)
 }
-
+/*
 func makePawnForwardMove(board:Chessboard, from:ChessboardSquare, to:ChessboardSquare) -> ChessMove? {
     //Pawns cannot take moving forward, so "to" square must be empty
     
     guard let player = board[from]?.player,  board[to] == nil,
-        let move = ChessMove(from: from.int8Value, to: to.int8Value,on:board)
+        let move = ChessMove.createMove(from: from.int8Value, to: to.int8Value,on:board)
         else  { return nil }
    
     return promotePawnIfValid(move:move, player:player,board:board)
@@ -206,7 +206,7 @@ func promotePawnIfValid(move:ChessMove,player:PlayerColor, board:Chessboard) -> 
     let farRank  = (player == .white ) ? ChessRank._8 : ChessRank._1
     
     if move.to.rank == Int8(farRank.rawValue) {
-        if let prometedMove = ChessMove(from:move.from,to:move.to,on:board, promote:.queen) {
+        if let prometedMove = ChessMove.createMove(from:move.from,to:move.to,on:board, promote:.queen) {
             return prometedMove
         }
     }
@@ -222,62 +222,14 @@ func makePawnTakingdMove(board:Chessboard, from:ChessboardSquare, to:ChessboardS
         let piece = board[to],
          let player = board[from]?.player,
         board.whosTurnIsItAnyway != piece.player,
-        let move = ChessMove(from: from.int8Value, to: to.int8Value,on:board)
+        let move = ChessMove.createMove(from: from.int8Value, to: to.int8Value,on:board)
             else  { return nil }
     
     return promotePawnIfValid(move:move, player:player, board: board)
 }
-
+*/
 func enPassant(board:Chessboard, square origin:Int8)->ChessMove? {
     return ChessMove(enPassant:origin, on: board)
-    /*
-  
-    guard let lastMove = board.moves.last
-        else { return nil }
-    
-    //white
-    switch board.whosTurnIsItAnyway {
-    case .white:
-        if square.rank  == ._5 && lastMove.from.rank == ._7 && lastMove.to.rank == ._5
-           {
-               let takeSquare = lastMove.to
-               
-               if  let to =  square.getNeighbour(.topRight) ,
-                   to.file == takeSquare.file
-               {
-                   return ChessMove(from:square,to:to, on:board, aux:.take(takeSquare))
-               }
-               
-               if let to = square.getNeighbour(.topLeft),
-                   to.file == takeSquare.file
-               {
-                    return ChessMove(from:square,to:to,on:board, aux:.take(takeSquare))
-               }
-           }
-    case .black:
-        if square.rank  == ._4 && lastMove.from.rank == ._2 && lastMove.to.rank == ._4
-        {
-            let takeSquare = lastMove.to
-            
-            if  let to =  square.getNeighbour(.bottomRight),
-                to.file == takeSquare.file
-            {
-                return ChessMove(from:square,to:to,on:board, aux:.take(takeSquare))
-            }
-            
-            if let to = square.getNeighbour(.bottomLeft),
-                to.file == takeSquare.file
-            {
-                 return ChessMove(from:square,to:to,on:board, aux:.take(takeSquare))
-            }
-        }
-      
-    }
-    
-   
-    
-    return nil
- */
 }
 
 func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
@@ -356,7 +308,7 @@ func validPawnMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     }
     
     var  moves = destinationSqs
-                .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
+                .compactMap{ ChessMove.createMove(from: origin, to: $0, on: board ) }
     
     if let  enPassant = enPassant(board: board, square: origin){
          moves.append( enPassant)
@@ -451,7 +403,7 @@ func validKnightMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     
     return destinationSqs
                  .filter  {  board[$0]?.player != board.whosTurnIsItAnyway }
-                .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
+                .compactMap{ ChessMove.createMove(from: origin, to: $0, on: board ) }
     
     
 }
@@ -520,7 +472,7 @@ func validKingMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     
     return destinationSqs
                 .filter  {  board[$0]?.player != board.whosTurnIsItAnyway }
-                .compactMap{ ChessMove(from: origin, to: $0, on: board , updateCasteleState: true) }
+                .compactMap{ ChessMove.createMove(from: origin, to: $0, on: board , updateCasteleState: true) }
     
 }
 
@@ -637,7 +589,7 @@ func validBishopMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
     
     
       return destinationSqs
-                .compactMap{ ChessMove(from: origin, to: $0, on: board ) }
+                .compactMap{ ChessMove.createMove(from: origin, to: $0, on: board ) }
      // return []
    // let directions:[ChessboardSquare.Direction] = [.topLeft,.topRight,.bottomLeft,.bottomRight]
        
@@ -725,7 +677,7 @@ func validRookMoves(board:Chessboard, square origin:Int8) -> [ChessMove] {
    
     
   return destinationSqs
-        .compactMap{ ChessMove(from: origin, to: $0, on: board, updateCasteleState: true ) }
+        .compactMap{ ChessMove.createMove(from: origin, to: $0, on: board, updateCasteleState: true ) }
 }
 
 

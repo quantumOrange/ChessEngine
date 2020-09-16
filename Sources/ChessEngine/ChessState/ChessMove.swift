@@ -29,14 +29,19 @@ public struct ChessMove:Equatable,CustomStringConvertible,Codable {
       
     var castleStateChange:CastleStateChange? = nil
     
-    init?( from:Int8,to:Int8, on board:Chessboard, promote:ChessPiece.Kind? = nil ) {
+    static func createMove( from:Int8,to:Int8,  on board:Chessboard, promote:ChessPiece.Kind? = nil)-> ChessMove? {
         guard let movePiece = board[from] else { return nil }
+        return ChessMove(from:from, to:to, movePiece:movePiece, takePiece:board[to], promote: promote)
+    }
+    
+    init?( from:Int8,to:Int8, movePiece:ChessPiece, takePiece:ChessPiece?, promote:ChessPiece.Kind? = nil ) {
+        //guard let movePiece = board[from] else { return nil }
               
               removeFirst =  ChessChange(square: from, piece: movePiece)
               
               var addPiece = movePiece
               
-              if let takePiece = board[to] {
+              if let takePiece = takePiece {
                   removeSecond = ChessChange(square: to, piece: takePiece)
               }
               else {
@@ -52,15 +57,20 @@ public struct ChessMove:Equatable,CustomStringConvertible,Codable {
              
     }
     
-    init?( from:Int8,to:Int8, on board:Chessboard, updateCasteleState:Bool  ) {
-       
+    static func createMove( from:Int8,to:Int8, on board:Chessboard, updateCasteleState:Bool  ) -> ChessMove? {
         guard let movePiece = board[from] else { return nil }
+        return ChessMove(from:from, to:to, movePiece:movePiece, takePiece:board[to], casteleState:board.castelState)
+    }
+    
+    init?( from:Int8,to:Int8, movePiece:ChessPiece, takePiece:ChessPiece?,  casteleState:Chessboard.CastelState ) {
+       
+       // guard let movePiece = board[from] else { return nil }
         
         removeFirst =  ChessChange(square: from, piece: movePiece)
         
-        var addPiece = movePiece
+        //var addPiece = movePiece
         
-        if let takePiece = board[to] {
+        if let takePiece = takePiece {
             removeSecond = ChessChange(square: to, piece: takePiece)
         }
         else {
@@ -69,12 +79,12 @@ public struct ChessMove:Equatable,CustomStringConvertible,Codable {
         
         addSecond = nil // only for castles which has its own init
         //changes.append(ChessChange(type: .add, square: to, piece:addPiece))
-        addFirst = ChessChange(square: to, piece:addPiece)
+        addFirst = ChessChange(square: to, piece:movePiece)
        
-        if updateCasteleState {
+       // if let casteleState = casteleState {
             let changes = [removeFirst]
-            self.castleStateChange = CastleStateChange(changes:changes , initialState: board.castelState)
-        }
+            self.castleStateChange = CastleStateChange(changes:changes , initialState:casteleState)
+       // }
          
     }
     

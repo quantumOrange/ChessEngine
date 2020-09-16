@@ -161,13 +161,13 @@ class ValidMoves: XCTestCase {
           */
                    var board = Chessboard(string: emptyboardStr)!
                   
-             let valid1 = ChessMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value, on: board)!
-             let valid2 = ChessMove(from: square, to: ChessboardSquare(code: "c5")!.int8Value, on: board)!
-             let valid3 = ChessMove(from: square, to: ChessboardSquare(code: "g1")!.int8Value, on: board)!
-             let valid4 = ChessMove(from: square, to: ChessboardSquare(code: "g7")!.int8Value, on: board)!
+             let valid1 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value, on: board)!
+             let valid2 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "c5")!.int8Value, on: board)!
+             let valid3 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "g1")!.int8Value, on: board)!
+             let valid4 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "g7")!.int8Value, on: board)!
 
 
-             let invalid = ChessMove(from: square, to: ChessboardSquare(code: "f1")!.int8Value,on: board)!
+             let invalid = ChessMove.createMove(from: square, to: ChessboardSquare(code: "f1")!.int8Value,on: board)!
                   
             assert(board[square]!.kind == .bishop)
         
@@ -189,12 +189,12 @@ class ValidMoves: XCTestCase {
         let moves2 =  validBishopMoves(board:board, square: square)
           
         
-           let valid5 = ChessMove(from: square, to: ChessboardSquare(code: "c3")!.int8Value, on: board)! // we can take the black pawn
+           let valid5 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "c3")!.int8Value, on: board)! // we can take the black pawn
         
-           let invalid1 = ChessMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value, on: board)! // but we  can gono further in that direction
+           let invalid1 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value, on: board)! // but we  can gono further in that direction
         
-           let invalid2 = ChessMove(from: square, to: ChessboardSquare(code: "f6")!.int8Value, on: board)! // and we cannot pass our own pawn
-           let invalid3 = ChessMove(from: square, to: ChessboardSquare(code: "g7")!.int8Value, on: board)! // and we cannot pass our own pawn
+           let invalid2 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "f6")!.int8Value, on: board)! // and we cannot pass our own pawn
+           let invalid3 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "g7")!.int8Value, on: board)! // and we cannot pass our own pawn
         
         
         XCTAssert(moves2.count == 8, "Expected 8 moves, found  \(moves.count)")
@@ -231,14 +231,14 @@ class ValidMoves: XCTestCase {
               
                 let board = Chessboard(string: emptyboardStr)!
                
-          let valid1 = ChessMove(from: square, to: ChessboardSquare(code: "f4")!.int8Value, on: board,updateCasteleState: true)!
-          let valid2 = ChessMove(from: square, to: ChessboardSquare(code: "d7")!.int8Value, on: board,updateCasteleState: true)!
-          let valid3 = ChessMove(from: square, to: ChessboardSquare(code: "c4")!.int8Value, on: board,updateCasteleState: true)!
-          let valid4 = ChessMove(from: square, to: ChessboardSquare(code: "d1")!.int8Value, on: board,updateCasteleState: true)!
+          let valid1 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "f4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid2 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "d7")!.int8Value, on: board,updateCasteleState: true)!
+          let valid3 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "c4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid4 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "d1")!.int8Value, on: board,updateCasteleState: true)!
 
-          let valid5 = ChessMove(from: square, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
-          let valid6 = ChessMove(from: square, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
-          let invalid = ChessMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value,on: board,updateCasteleState: true)!
+          let valid5 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
+          let valid6 = ChessMove.createMove(from: square, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
+          let invalid = ChessMove.createMove(from: square, to: ChessboardSquare(code: "b2")!.int8Value,on: board,updateCasteleState: true)!
                
                assert(board[square]!.kind == .rook)
          print("------hello-----")
@@ -290,14 +290,14 @@ class ValidMoves: XCTestCase {
         
         let moves =  validRookMoves(board:board, square: whiteRookSquare)
         
-        let valid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "f4")!.int8Value, on: board, updateCasteleState: true )!
-        let valid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d7")!.int8Value, on: board ,updateCasteleState: true)!
-        let valid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "c4")!.int8Value, on: board ,updateCasteleState: true)!
-        let valid4 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d1")!.int8Value, on: board, updateCasteleState: true)!
+        let valid1 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "f4")!.int8Value, on: board, updateCasteleState: true )!
+        let valid2 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "d7")!.int8Value, on: board ,updateCasteleState: true)!
+        let valid3 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "c4")!.int8Value, on: board ,updateCasteleState: true)!
+        let valid4 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "d1")!.int8Value, on: board, updateCasteleState: true)!
 
-        let invalid1 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
-        let invalid2 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
-        let invalid3 = ChessMove(from: whiteRookSquare, to: ChessboardSquare(code: "b2")!.int8Value, on: board,updateCasteleState: true)!
+        let invalid1 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "a4")!.int8Value, on: board,updateCasteleState: true)!
+        let invalid2 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "d8")!.int8Value, on: board,updateCasteleState: true)!
+        let invalid3 = ChessMove.createMove(from: whiteRookSquare, to: ChessboardSquare(code: "b2")!.int8Value, on: board,updateCasteleState: true)!
         
         XCTAssert(moves.contains(valid1))
         XCTAssert(moves.contains(valid2))
@@ -310,8 +310,8 @@ class ValidMoves: XCTestCase {
         
         let blackMoves =  validRookMoves(board:board, square: blackRookSquare)
         
-        let valid5 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "e1")!.int8Value, on: board, updateCasteleState: true)!
-        let invalid4 = ChessMove(from: blackRookSquare, to: ChessboardSquare(code: "g3")!.int8Value, on: board, updateCasteleState: true)!
+        let valid5 = ChessMove.createMove(from: blackRookSquare, to: ChessboardSquare(code: "e1")!.int8Value, on: board, updateCasteleState: true)!
+        let invalid4 = ChessMove.createMove(from: blackRookSquare, to: ChessboardSquare(code: "g3")!.int8Value, on: board, updateCasteleState: true)!
         XCTAssert(blackMoves.count == 14, "expected 14 moves, found \(moves.count)")
         XCTAssert(blackMoves.contains(valid5))
         XCTAssertFalse(blackMoves.contains(invalid4))
@@ -351,10 +351,10 @@ class ValidMoves: XCTestCase {
         assert(board[blackKnightSq]!.kind == .knight)
         
         let validWhiteKnightMoves = ["b4" , "a5","d4","e5", "a7","b8","d8", "e7"]
-                                    .map{ ChessMove(from: whiteKnightSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
+                                    .map{ ChessMove.createMove(from: whiteKnightSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
         
         let validBlackKnightMoves = ["d1" , "d3","e4","g4", "h3"]
-                                        .map{ ChessMove(from: blackKnightSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
+                                        .map{ ChessMove.createMove(from: blackKnightSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
         
         let whiteresults = validKnightMoves(board: board, square: whiteKnightSq)
         
@@ -372,7 +372,7 @@ class ValidMoves: XCTestCase {
                XCTAssert(blackresults.contains(move) , "\(move) should be valid")
            }
         
-        let invalid = ChessMove(from: blackKnightSq, to: ChessboardSquare(code: "h1")!.int8Value, on: board)!
+        let invalid = ChessMove.createMove(from: blackKnightSq, to: ChessboardSquare(code: "h1")!.int8Value, on: board)!
         
         XCTAssertFalse(blackresults.contains(invalid) , "\(invalid) should not be be valid, becuase we have a black piece on that square")
            XCTAssert(blackresults.count == 5, "expected 5 move, got \(blackresults.count)")
@@ -413,10 +413,10 @@ class ValidMoves: XCTestCase {
         assert(board[blackKingSq]!.kind == .king)
         
         let validWhiteKingMoves = ["b5" , "b6","b6","c5", "c7","d5","d6", "d7"]
-                                    .map{ ChessMove(from: whiteKingSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
+                                    .map{ ChessMove.createMove(from: whiteKingSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
         
         let validBlackKingMoves = ["f1" , "h1","g2","h2"]
-                                        .map{ ChessMove(from: blackKingSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
+                                        .map{ ChessMove.createMove(from: blackKingSq, to: ChessboardSquare(code: $0)!.int8Value, on: board)!}
         
         let whiteresults = validKingMoves(board: board, square: whiteKingSq)
         
@@ -434,7 +434,7 @@ class ValidMoves: XCTestCase {
                XCTAssert(blackresults.contains(where:{ $0.from == move.from && $0.to == move.to }) , "\(move) should be valid")
            }
         
-        let invalid = ChessMove(from: blackKingSq, to: ChessboardSquare(code: "f2")!.int8Value, on: board)!
+        let invalid = ChessMove.createMove(from: blackKingSq, to: ChessboardSquare(code: "f2")!.int8Value, on: board)!
         
         XCTAssertFalse(blackresults.contains(invalid) , "\(invalid) should not be be valid, becuase we have a black piece on that square")
            XCTAssert(blackresults.count == 4, "expected 3 move, got \(blackresults.count)")
@@ -461,15 +461,15 @@ class ValidMoves: XCTestCase {
         //test white
         var moves = validPawnMoves(board: board, square: ChessboardSquare(code: "c4")!.int8Value)
         
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "c5")!.int8Value, on: board)!))
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "d5")!.int8Value, on: board)!))
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "b5")!.int8Value, on: board)!)) //can't move dioahgonal if not taking
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "c6")!.int8Value, on: board)!)) // can't move two unlesss first move
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "c5")!.int8Value, on: board)!))
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "d5")!.int8Value, on: board)!))
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "b5")!.int8Value, on: board)!)) //can't move dioahgonal if not taking
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "c4")!.int8Value, to: ChessboardSquare(code: "c6")!.int8Value, on: board)!)) // can't move two unlesss first move
         
         
         moves = validPawnMoves(board: board, square: ChessboardSquare(code: "f2")!.int8Value)
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "f2")!.int8Value, to: ChessboardSquare(code: "f3")!.int8Value, on: board)!))
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "f2")!.int8Value, to: ChessboardSquare(code: "f4")!.int8Value, on: board)!))
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "f2")!.int8Value, to: ChessboardSquare(code: "f3")!.int8Value, on: board)!))
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "f2")!.int8Value, to: ChessboardSquare(code: "f4")!.int8Value, on: board)!))
         
         
      // test black
@@ -477,15 +477,15 @@ class ValidMoves: XCTestCase {
         
         moves = validPawnMoves(board: board, square: ChessboardSquare(code: "d5")!.int8Value)
         
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "d4")!.int8Value, on: board)!))
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "c4")!.int8Value, on: board)!))
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "e4")!.int8Value, on: board)!)) //can't move dioahgonal if not taking
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "c3")!.int8Value, on: board)!)) // can't move two unlesss first move
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "d4")!.int8Value, on: board)!))
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "c4")!.int8Value, on: board)!))
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "e4")!.int8Value, on: board)!)) //can't move dioahgonal if not taking
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "d5")!.int8Value, to: ChessboardSquare(code: "c3")!.int8Value, on: board)!)) // can't move two unlesss first move
         
         moves = validPawnMoves(board: board, square: ChessboardSquare(code: "g6")!.int8Value)
-        XCTAssert(moves.contains(ChessMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "g5")!.int8Value, on: board)!))
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "g4")!.int8Value, on: board)!)) // can't move two unlesss first move
-        XCTAssertFalse(moves.contains(ChessMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "h5")!.int8Value, on: board)!))//can't move dioahgonal if not taking
+        XCTAssert(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "g5")!.int8Value, on: board)!))
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "g4")!.int8Value, on: board)!)) // can't move two unlesss first move
+        XCTAssertFalse(moves.contains(ChessMove.createMove(from: ChessboardSquare(code: "g6")!.int8Value, to: ChessboardSquare(code: "h5")!.int8Value, on: board)!))//can't move dioahgonal if not taking
     }
 }
 
