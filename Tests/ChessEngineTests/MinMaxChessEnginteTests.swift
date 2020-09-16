@@ -584,7 +584,7 @@ class MinMaxChessEnginteTests: XCTestCase {
         XCTAssertTrue(checkPuzzel(puzzel:puzzel3,solution:solution3), "failed for \n \(puzzel3)")
     }
 
-    func testPerformanceExample() {
+    func testPerformanceMiniMax() {
         
         let boardStr =      """
 
@@ -604,7 +604,7 @@ class MinMaxChessEnginteTests: XCTestCase {
         let board = Chessboard(string:boardStr)!
         
         self.measure {
-            let _ = miniMaxRoot(for: board, depth: 3)
+            let _ = pickMoveMiniMax(for: board, depth: 3)
             
         }
     }
