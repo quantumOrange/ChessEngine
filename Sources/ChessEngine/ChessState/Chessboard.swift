@@ -18,14 +18,24 @@ public struct Chessboard:Codable {
         case inPlay
     }
     
-    struct CastelState:Codable,Equatable {
-       
-        
-           var whiteCanCastleQueenside:Bool = true;
-           var whiteCanCastleKingside:Bool = true;
-           var blackCanCastleQueenside:Bool = true;
-           var blackCanCastleKingside:Bool = true;
-        
+    struct CastelState:Codable,Equatable,OptionSet {
+            let rawValue: Int8
+
+            static let whiteCanCastleQueenside = CastelState(rawValue: 1<<0 )
+            static let whiteCanCastleKingside  = CastelState(rawValue: 1<<1 )
+            static let blackCanCastleQueenside = CastelState(rawValue: 1<<2 )
+            static let blackCanCastleKingside  = CastelState(rawValue: 1<<3 )
+
+            static let allowAll:CastelState = [.whiteCanCastleQueenside,
+                                           .whiteCanCastleKingside ,
+                                           .blackCanCastleQueenside,
+                                           .blackCanCastleKingside]
+
+            static let whiteCanCastle:CastelState = [.whiteCanCastleQueenside,
+                                                     .whiteCanCastleKingside]
+
+            static let blackCanCastle:CastelState = [.blackCanCastleQueenside,
+                                                     .blackCanCastleKingside]
     }
     
     init() {
@@ -41,7 +51,7 @@ public struct Chessboard:Codable {
     
     public internal(set) var takenPieces:[ChessPiece] = []
     
-    var castelState:CastelState = CastelState()
+    var castelState:CastelState = CastelState.allowAll
     
     var moves:[ChessMove] = []
     

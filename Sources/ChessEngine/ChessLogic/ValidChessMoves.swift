@@ -143,7 +143,7 @@ func validMoves(chessboard:Chessboard, square origin:Int8, includeCastles:Bool =
     switch piece.kind {
     
     case .pawn:
-         return validPawnMoves(board: chessboard, square:origin)
+         return validPawnMoves(board: chessboard, square:origin )
     case .knight:
          return validKnightMoves(board: chessboard, square:origin)
     case .bishop:

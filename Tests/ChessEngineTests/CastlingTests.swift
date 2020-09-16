@@ -240,8 +240,8 @@ class CastlingTests: XCTestCase {
         var board =                 Chessboard(string: canCastleString)!
         
         
-        XCTAssertTrue(board.castelState.whiteCanCastleKingside)
-        XCTAssertTrue(board.castelState.blackCanCastleKingside)
+        XCTAssertTrue(board.castelState.contains(.whiteCanCastleKingside))
+        XCTAssertTrue(board.castelState.contains(.blackCanCastleKingside))
         //XCTAssertFalse(board.castelState.blackCanCastleQueenside)
         //XCTAssertFalse(board.castelState.whiteCanCastleQueenside)
         
@@ -265,11 +265,11 @@ class CastlingTests: XCTestCase {
         
         
         //the board looks the same but niether side can castle now:
-        XCTAssertFalse(board.castelState.whiteCanCastleKingside)
-        XCTAssertFalse(board.castelState.whiteCanCastleQueenside)
-        XCTAssertFalse(board.castelState.blackCanCastleKingside)
+        XCTAssertFalse(board.castelState.contains(.whiteCanCastleKingside))
+        XCTAssertFalse(board.castelState.contains(.whiteCanCastleQueenside))
+        XCTAssertFalse(board.castelState.contains(.blackCanCastleKingside))
         //It's not a valid move right now, but black still has the right to castle on the queenside
-        XCTAssertTrue(board.castelState.blackCanCastleQueenside)
+        XCTAssertTrue(board.castelState.contains(.blackCanCastleQueenside))
         
         
         

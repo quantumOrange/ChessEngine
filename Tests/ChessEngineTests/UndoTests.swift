@@ -51,14 +51,14 @@ class UndoTests: XCTestCase {
         
         XCTAssertFalse(board.same( as: Chessboard.start() ))
         //white cannot castle because they moved the king
-        XCTAssertFalse(board.castelState.whiteCanCastleKingside)
-        XCTAssertFalse(board.castelState.whiteCanCastleQueenside)
+        XCTAssertFalse(board.castelState.contains(.whiteCanCastleKingside))
+        XCTAssertFalse(board.castelState.contains(.whiteCanCastleQueenside))
         
         //black cannot castle kingside because they moved the rook
-        XCTAssertFalse(board.castelState.blackCanCastleKingside)
+        XCTAssertFalse(board.castelState.contains(.blackCanCastleKingside))
         
         //black still has the right to caste queenside
-        XCTAssert(board.castelState.blackCanCastleQueenside)
+        XCTAssert(board.castelState.contains(.blackCanCastleQueenside))
         
         XCTAssert(board.takenPieces.count == 3)
         if let piece = board.takenPieces.last {
@@ -85,10 +85,10 @@ class UndoTests: XCTestCase {
         XCTAssert(board.takenPieces.isEmpty)
         
         //Castle state restored to initial state - both players can castle on both sides
-        XCTAssert(board.castelState.whiteCanCastleKingside)
-        XCTAssert(board.castelState.blackCanCastleKingside)
-        XCTAssert(board.castelState.whiteCanCastleQueenside)
-        XCTAssert(board.castelState.blackCanCastleQueenside)
+        XCTAssert(board.castelState.contains(.whiteCanCastleKingside))
+        XCTAssert(board.castelState.contains(.blackCanCastleKingside))
+        XCTAssert(board.castelState.contains(.whiteCanCastleQueenside))
+        XCTAssert(board.castelState.contains(.blackCanCastleQueenside))
         
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.

@@ -46,39 +46,44 @@ extension  Chessboard.CastelState {
         case .white:
             switch side {
             case .kingside:
-               return whiteCanCastleKingside
+                return contains(.whiteCanCastleKingside)
             case .queenside:
-               return whiteCanCastleQueenside
+               return contains(.whiteCanCastleQueenside)
             }
         case .black:
             switch side {
             case .kingside:
-               return blackCanCastleKingside
+               return contains(.blackCanCastleKingside)
             case .queenside:
-               return blackCanCastleQueenside
+               return contains(.blackCanCastleQueenside)
             }
         }
     }
     
-    mutating func setCanCastle(player:PlayerColor,on side:CastleSide ,to value:Bool){
-        
-        switch player {
-        
+    mutating func setCannotCastle(player:PlayerColor,on side:CastleSide ){
+      
+        switch player
+        {
+
         case .white:
-            switch side {
+            switch side
+            {
             case .kingside:
-               whiteCanCastleKingside = value
+                remove(.whiteCanCastleKingside)
             case .queenside:
-               whiteCanCastleQueenside = value
+               remove(.whiteCanCastleQueenside)
             }
         case .black:
-            switch side {
+            switch side
+            {
             case .kingside:
-               blackCanCastleKingside = value
+               remove(.blackCanCastleKingside)
             case .queenside:
-               blackCanCastleQueenside = value
+               remove(.blackCanCastleQueenside)
             }
         }
+        
+        
         
     }
 
@@ -92,19 +97,19 @@ extension  Chessboard.CastelState {
         for sq in fromSquares {
             switch sq {
             case whiteKingSquare:
-                newState.setCanCastle(player:.white, on: .kingside, to:false)
-                newState.setCanCastle(player:.white, on: .queenside, to:false)
+                newState.setCannotCastle(player:.white, on: .kingside)
+                newState.setCannotCastle(player:.white, on: .queenside)
             case blackKingSquare:
-                newState.setCanCastle(player:.black, on: .kingside, to:false)
-                newState.setCanCastle(player:.black, on: .queenside, to:false)
+                newState.setCannotCastle(player:.black, on: .kingside)
+                newState.setCannotCastle(player:.black, on: .queenside)
             case whiteKingsideRookSquare:
-                newState.setCanCastle(player:.white, on: .kingside, to:false)
+                newState.setCannotCastle(player:.white, on: .kingside)
             case whiteQueensideRookSquare:
-                newState.setCanCastle(player:.white, on: .queenside, to:false)
+                newState.setCannotCastle(player:.white, on: .queenside)
             case blackKingsideRookSquare:
-                newState.setCanCastle(player:.black, on: .kingside, to:false)
+                newState.setCannotCastle(player:.black, on: .kingside)
             case blackQueensideRookSquare:
-                newState.setCanCastle(player:.black, on: .queenside, to:false)
+                newState.setCannotCastle(player:.black, on: .queenside)
             default:
                 break
             }
@@ -118,17 +123,17 @@ extension  Chessboard.CastelState {
             switch piece.kind
             {
             case .king:
-                newState.setCanCastle(player: piece.player, on: .kingside, to:false)
-                newState.setCanCastle(player: piece.player, on: .queenside, to:false)
+                newState.setCannotCastle(player: piece.player, on: .kingside)
+                newState.setCannotCastle(player: piece.player, on: .queenside)
             case .rook:
                 //kingside rooks have ids  56, 63
                 //queenside rooks have ids 0, 7
                 switch piece.id
                 {
                 case 0,7:
-                    newState.setCanCastle(player: piece.player, on: .queenside, to:false)
+                    newState.setCannotCastle(player: piece.player, on: .queenside)
                 case 56,63:
-                    newState.setCanCastle(player: piece.player, on: .kingside, to:false)
+                    newState.setCannotCastle(player: piece.player, on: .kingside)
                 default:
                     break
                 }
