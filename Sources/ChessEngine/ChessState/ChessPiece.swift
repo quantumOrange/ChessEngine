@@ -133,7 +133,7 @@ extension ChessPiece {
         }
     }
     
-    var value:Float {
+    public var value:Float {
         var absValue:Float = 0.0
         switch kind {
         case .pawn:
