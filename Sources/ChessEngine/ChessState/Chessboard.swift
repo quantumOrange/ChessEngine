@@ -332,12 +332,7 @@ extension ChessFile:Identifiable {
 }
 
 struct ChessGame {
-    
     let board:Chessboard
-    
-    let white:User
-    let black:User
-    
     let history:[ChessMove]
 }
 
