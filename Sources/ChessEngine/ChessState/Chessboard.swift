@@ -15,6 +15,7 @@ public struct Chessboard:Codable {
     public enum GamePlayState:Equatable ,Codable {
         case won(PlayerColor)
         case draw
+        case notStarted
         case inPlay
     }
     
@@ -84,8 +85,7 @@ extension  Chessboard.GamePlayState {
     private enum CodingKeys: String, CodingKey {
         case won
         case draw
-        // case noStarted
-        // case abandoned
+        case notStarted
         case inPlay
     }
 
@@ -111,6 +111,12 @@ extension  Chessboard.GamePlayState {
             return
         }
         
+        if let _ = try? values.decode(String.self, forKey:.notStarted) {
+            self = .notStarted
+            return
+        }
+        
+        
         throw PostTypeCodingError.decoding("Whoops! \(dump(values))")
     }
     
@@ -125,6 +131,9 @@ extension  Chessboard.GamePlayState {
             try container.encode("draw", forKey: .draw)
         case .inPlay:
             try container.encode("inPlay", forKey: .inPlay)
+            
+        case .notStarted:
+            try container.encode("inPlay", forKey: .notStarted)
        
         }
     }
@@ -390,12 +399,9 @@ extension Chessboard
                 storage[k] = piecesAndSpaces[t]
             }
         }
-        
-        
-       
+
         whosTurnIsItAnyway = toMove
         quickValue = 0.0
-       // assert(whosTurnIsItAnyway == toMove, "Wrong players to move")
     }
 }
 

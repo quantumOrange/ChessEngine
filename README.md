@@ -42,7 +42,7 @@ let mv = Move(from: .e2, to:.e4)
 let newBoard = apply(move: mv, to: chessboard)
 ```
 
-To get the chess engimne to generate a move, call pickMove, optionally passing in a depth value to tell the engine how many moves to look ahead:
+To get the chess engine to generate a move, call pickMove, optionally passing in a depth value to tell the engine how many moves to look ahead:
 
 ``` swift
     let move = pickMove(for:chessboard, depth: 5) 

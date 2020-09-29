@@ -48,7 +48,7 @@ class UndoTests: XCTestCase {
             board = apply(move: move, to: board)!
             XCTAssert(board.whosTurnIsItAnyway ==  (board.moves.count.isMultiple(of: 2) ? .white : .black))
         }
-        
+        print(board)
         XCTAssertFalse(board.same( as: Chessboard.start() ))
         //white cannot castle because they moved the king
         XCTAssertFalse(board.castelState.contains(.whiteCanCastleKingside))

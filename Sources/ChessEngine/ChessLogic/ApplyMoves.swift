@@ -8,11 +8,26 @@
 
 import Foundation
 
+public func applyMoveIfValid(board:inout Chessboard,move:Move)->Bool{
+    guard let validatedMove = validate(chessboard:board, move:move) else { return false }
+    
+    board.apply(move:validatedMove)
+    board.gamePlayState = gamePlayState(chessboard: board)
+    return true
+}
+
+public func applyMoveIfValid(board:inout Chessboard,move:ChessMove)->Bool{
+    guard let validatedMove = validate(chessboard:board, move:move) else { return false }
+    
+    board.apply(move:validatedMove)
+    board.gamePlayState = gamePlayState(chessboard: board)
+    return true
+}
+
 public func apply(move:Move, to board:Chessboard) -> Chessboard? {
      guard let chessMove = validate(chessboard: board, move: move) else { return nil }
     return  apply(move:chessMove, to:board)
 }
-
 
 public func apply(move:ChessMove, to board:Chessboard) -> Chessboard? {
     var board = board
@@ -22,26 +37,22 @@ public func apply(move:ChessMove, to board:Chessboard) -> Chessboard? {
 
 extension Chessboard {
     mutating func apply(move:ChessMove )  {
-       
-    
-       // self.quickValue -=  move.removeFirst.piece.value
+
         self[move.removeFirst.square]  = nil
         
         
         if let removeSecond = move.removeSecond {
             if move.addSecond == nil {
-                // we are removing a piec but not putting it back => taking a peice
+                // we are removing a piece but not putting it back => taking a peice
                 takenPieces.append(removeSecond.piece)
             }
           
             self[removeSecond.square] = nil
         }
-        
-       // self.quickValue +=  move.addFirst.piece.value
+
         self[move.addFirst.square]  = move.addFirst.piece
         
         if let addsecond = move.addSecond {
-          //  self.quickValue +=  addsecond.piece.value
             self[addsecond.square] = addsecond.piece
         }
         
