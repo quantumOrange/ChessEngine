@@ -68,40 +68,6 @@ extension Chessboard {
         
     }
     
-    mutating func undo() -> Bool {
-        if moves.count == 0 { return false }
-       // let n = moves.count
-        let move = moves.removeLast()
-              
-        //remove the piece that were placed
-       // self.quickValue -=  move.addFirst.piece.value
-        self[move.addFirst.square]  = nil
-
-        if let addSecond = move.addSecond {
-        //    self.quickValue -=  addSecond.piece.value
-            self[addSecond.square] = nil
-        }
-
-        // replace the pieces that were removed
-      
-        self[move.removeFirst.square]  = move.removeFirst.piece
-
-        if let removesecond = move.removeSecond {
-            if move.addSecond == nil {
-                // a piece was taken
-                _ = takenPieces.removeLast()
-            }
-           
-            self[removesecond.square] = removesecond.piece
-        }
-
-        if let stateChange = move.castleStateChange {
-            self.castelState = stateChange.from
-        }
-        
-        whosTurnIsItAnyway = !whosTurnIsItAnyway
-        return true
-    }
 }
 
 func apply(move:ChessMove, to board:Chessboard) -> Chessboard{

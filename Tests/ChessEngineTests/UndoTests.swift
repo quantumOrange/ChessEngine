@@ -93,6 +93,60 @@ class UndoTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+    
+    
+    func testRedo() throws {
+        //A valid sequence of simple moves for a game
+        let moves:[Move] = [
+                                    Move(code:"e2->e4")!,
+                                    Move(code:"e7->e6")!,
+                                    Move(code:"f1->c4")!,
+                                    Move(code:"h7->h6")!,
+                                    Move(code:"d1->f3")!,
+                                    Move(code:"f8->a3")!,
+                                    Move(code:"b2->b3")!,
+                                    Move(code:"a3->c1")!,
+                                    Move(code:"b1->c3")!,
+                                    Move(code:"c1->d2")!,
+                                    Move(code:"e1->d2")!,
+                                    Move(code:"h8->h7")!,
+                                    Move(code:"a1->d1")!,
+                                    Move(code:"h7->h8")!,
+                                    Move(code:"g1->h3")!,
+                                    Move(code:"e6->e5")!,
+                                    Move(code:"h1->e1")!,
+                                    Move(code:"g7->g6")!
+                                ]
+        
+        var  board = Chessboard.start()
+        
+        for move in moves {
+            board = apply(move: move, to: board)!
+            XCTAssert(board.whosTurnIsItAnyway ==  (board.moves.count.isMultiple(of: 2) ? .white : .black))
+        }
+        print(board)
+        
+        XCTAssertFalse(board.same( as: Chessboard.start() ))
+        
+        let endBoard = board
+        let numUndos = moves.count
+        
+        //Undo all the moves
+        for _ in 0...numUndos {
+            _ = board.undo()
+        }
+        
+        // So the pieces should now be in there start positions
+        XCTAssert(board.same( as: Chessboard.start() ))
+        
+        //Redo all the moves
+        for _ in 0...numUndos {
+            _ = board.redo()
+        }
+        
+        XCTAssert(board.same( as: endBoard ))
+        
+    }
 
     func testPerformanceExample() throws {
         let moves:[Move] = [
