@@ -13,6 +13,7 @@ public func applyMoveIfValid(board:inout Chessboard,move:Move)->Bool{
     
     board.apply(move:validatedMove)
     board.gamePlayState = gamePlayState(chessboard: board)
+    board.redoableMoves = []
     return true
 }
 
@@ -21,18 +22,21 @@ public func applyMoveIfValid(board:inout Chessboard,move:ChessMove)->Bool{
     
     board.apply(move:validatedMove)
     board.gamePlayState = gamePlayState(chessboard: board)
+    board.redoableMoves = []
     return true
 }
 
 public func apply(move:Move, to board:Chessboard) -> Chessboard? {
      guard let chessMove = validate(chessboard: board, move: move) else { return nil }
-    return  apply(move:chessMove, to:board)
+     return apply(move:chessMove, to:board)
 }
 
-public func apply(move:ChessMove, to board:Chessboard) -> Chessboard? {
-    var board = board
-    board.apply(move: move)
-    return board
+
+public func apply(move:ChessMove, to board:Chessboard) -> Chessboard {
+    var mutableBoard = board
+    mutableBoard.apply(move: move)
+    mutableBoard.redoableMoves = []
+    return mutableBoard
 }
 
 extension Chessboard {
@@ -58,6 +62,7 @@ extension Chessboard {
         
         moves.append(move)
         
+        
         if let stateChange = move.castleStateChange {
             self.castelState = stateChange.to
         }
@@ -70,8 +75,4 @@ extension Chessboard {
     
 }
 
-func apply(move:ChessMove, to board:Chessboard) -> Chessboard{
-    var mutableBoard = board
-    mutableBoard.apply(move: move)
-    return mutableBoard
-}
+

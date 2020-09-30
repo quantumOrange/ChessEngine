@@ -147,6 +147,50 @@ class UndoTests: XCTestCase {
         XCTAssert(board.same( as: endBoard ))
         
     }
+    
+    func testCantRedoAfterMove() throws {
+        let moves:[Move] = [
+                                    Move(code:"e2->e4")!,
+                                    Move(code:"e7->e6")!,
+                                    Move(code:"f1->c4")!,
+                                    Move(code:"h7->h6")!,
+                                    Move(code:"d1->f3")!,
+                                    Move(code:"f8->a3")!,
+                                    Move(code:"b2->b3")!,
+                                    Move(code:"a3->c1")!,
+                                ]
+        
+        var  board = Chessboard.start()
+        
+        for move in moves {
+            board = apply(move: move, to: board)!
+            XCTAssert(board.whosTurnIsItAnyway ==  (board.moves.count.isMultiple(of: 2) ? .white : .black))
+        }
+        
+        
+        //Undo some moves
+        let numUndos = 6
+        
+        for _ in 0..<numUndos {
+            _ = board.undo()
+        }
+        
+        //We should have six redos available
+        XCTAssert(board.redoableMoves.count == numUndos)
+        
+        //Then we make a move ...
+        let move  = Move(code:"b1->c3")!
+        board = apply(move: move, to: board)!
+       
+        //After making a move, redos are no longer valid and should be discarded:
+        let newBoard = board
+        let success = board.redo()
+        
+        XCTAssert(board.redoableMoves.count == 0) // check we have discareded all redos
+        XCTAssertFalse(success) // check redo returns false
+        XCTAssert(newBoard.same(as: board)) //check redo did nothing
+        
+    }
 
     func testPerformanceExample() throws {
         let moves:[Move] = [

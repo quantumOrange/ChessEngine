@@ -32,13 +32,6 @@ func pickMoveSimple(for board:Chessboard) -> ChessMove? {
     let moves = validMoves(chessboard:board)
     
     let multiplier:Float =  board.whosTurnIsItAnyway == .black ? -1.0 : 1.0
-    /*
-    let values = moves
-                .map{ apply( move: $0, to: board)}
-                .map { $0.evaluate()}
-                .map{ $0 + Float.random(in: -0.5...0.5) }
-                .map { $0 * multiplier }
-    */
     
     let values =  moves
                     .map(evaluateMove(board,noise:0.5))
